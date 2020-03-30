@@ -41,7 +41,7 @@ router.get("/users", (req, res, next) => {
 
 router.post("/add", (req, res, next) => {
   //Remove empty strign from date to trigger default in Exercise mongoose Schema
-  if (req.body.date === "") req.body.date = undefined; //new Date().toISOString().slice(0, 10);
+  if (req.body.date === "") req.body.date = undefined;
 
   const exercise = new Exercise(req.body);
 
@@ -52,16 +52,21 @@ router.post("/add", (req, res, next) => {
       if (error) return next(error);
 
       //Add new exercise record to the user
-      //user.exercises.push(exercise);
+      user.exercises.push(exercise);
 
       //Populate exercises in user
+      Exercise.populate(user, { path: "exercises" });
 
       user.save((error, userRecord) => {
         if (error) return next(error);
-        console.log(user);
-        
-        res.json({"username":user.username,"description":req.body.description,"duration":req.body.duration,
-                  "_id":user._id,"date":new Date()});
+        res.json({
+          username: user.username,
+          description: req.body.description,
+          duration: parseInt(req.body.duration),
+          _id: user._id,
+          date: new Date().toString().slice(0, 15)
+        });
+        // res.json(user);
       });
     });
   });
