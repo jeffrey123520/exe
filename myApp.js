@@ -12,7 +12,7 @@ module.exports = app => {
       const newUser = new User({ username });
       newUser
         .save()
-        .then(() => res.json("addded"))
+        .then(() => (x = "addded"))
         .catch(err => res.status(400).json("Error"));
     }
     res.send("" + x);
