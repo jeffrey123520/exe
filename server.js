@@ -1,23 +1,27 @@
 const express = require("express");
 const app = express();
+
 const bodyParser = require("body-parser");
-const api = require("./myApp");
+const { ObjectID } = require("mongodb");
+
 const cors = require("cors");
-
 const mongoose = require("mongoose");
-
 mongoose.connect(
   "mongodb+srv://ritik:ritik369@excercisetracker-gncay.mongodb.net/test?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
-    useCreateIndex: true,
     useUnifiedTopology: true
   }
 );
 
-mongoose.connection.once("open", () => {
-  console.log("DB connection established");
+const connection = mongoose.connection;
+connection.once("open", () => {
+  console.log("MongoDB database connection ");
 });
+
+var { User } = require("./models/user.model");
+var { Exercise } = require("./models/exercise.model");
+
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,7 +31,9 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
-api(app);
+
+//post username to db, get an id in return
+
 // Not found middleware
 app.use((req, res, next) => {
   return next({ status: 404, message: "not found" });
