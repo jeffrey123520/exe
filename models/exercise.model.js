@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
-const exerciseSchema = new Schema(
+const Exercise = new Schema(
   {
-    username: {
-      type: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true
     },
     description: {
@@ -18,13 +18,10 @@ const exerciseSchema = new Schema(
     },
     date: {
       type: Date,
-      required: true
+      default: Date.now
     }
   },
-  {
-    timestamps: true
-  }
+  { versionKey: false }
 );
-const Exercise = mongoose.model("Exercise", exerciseSchema);
 
-module.exports = { Exercise };
+module.exports = mongoose.model("Exercise", Exercise);
