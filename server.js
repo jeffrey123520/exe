@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const api = require("./myApp");
 const cors = require("cors");
 
 const mongoose = require("mongoose");
@@ -27,7 +27,7 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
-
+api(app);
 // Not found middleware
 app.use((req, res, next) => {
   return next({ status: 404, message: "not found" });
