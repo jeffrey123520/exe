@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user.model ");
+const User = require("../models/user.model");
 const Exercise = require("../models/exercise.model");
 const mongoose = require("mongoose");
 
@@ -41,8 +41,7 @@ router.get("/users", (req, res, next) => {
 
 router.post("/add", (req, res, next) => {
   //Remove empty strign from date to trigger default in Exercise mongoose Schema
-  if (req.body.date === "")
-    req.body.date = new Date().toISOString().slice(0, 10);
+  if (req.body.date === "") req.body.date = undefined;
 
   const exercise = new Exercise(req.body);
 
